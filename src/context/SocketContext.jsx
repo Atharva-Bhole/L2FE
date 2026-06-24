@@ -33,7 +33,10 @@ export const SocketProvider = ({ children }) => {
     const fetchUserIdAndConnect = async () => {
       try {
         const res = await fetch('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true"
+          }
         });
         if (res.ok) {
           const data = await res.json();
