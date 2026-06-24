@@ -4,7 +4,12 @@ import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Video as VideoIcon, User, Loader2 } from 'lucide-react';
 
-const socket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { autoConnect: false });
+const socket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { 
+  autoConnect: false,
+  extraHeaders: {
+    "ngrok-skip-browser-warning": "true"
+  }
+});
 
 const Video = () => {
   const [searchParams, setSearchParams] = useSearchParams();

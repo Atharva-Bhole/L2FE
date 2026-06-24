@@ -21,7 +21,12 @@ export const SocketProvider = ({ children }) => {
     // To ensure socket joins the right room, we need userId.
     // A better approach is to let the user login flow trigger the connection.
     // For now, let's connect.
-    const newSocket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { autoConnect: false });
+    const newSocket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { 
+      autoConnect: false,
+      extraHeaders: {
+        "ngrok-skip-browser-warning": "true"
+      }
+    });
     
     // Attempt to get userId from token if possible, or we could fetch profile
     const fetchUserIdAndConnect = async () => {
