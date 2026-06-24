@@ -13,7 +13,10 @@ const Requests = () => {
       try {
         setIsLoading(true);
         const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/received', {
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            "ngrok-skip-browser-warning": "true"
+          }
         });
         setRequests(res.data.requests || []);
       } catch (err) {
@@ -31,7 +34,8 @@ const Requests = () => {
       setError('');
       
       await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/respond', { requestId, action }, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {"ngrok-skip-browser-warning": "true"}
       });
       
       // Capitalize the first letter of the action for the success message

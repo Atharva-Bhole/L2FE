@@ -16,12 +16,12 @@ const Home = () => {
         const token = localStorage.getItem('token');
         if (token) {
           const profileRes = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
           });
           setCurrentUserId(profileRes.data._id);
         }
 
-        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/post');
+        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/post', { headers: {"ngrok-skip-browser-warning": "true"}});
         setPosts(res.data);
       } catch (err) {
         setError('Failed to load posts. Please try again later.');
@@ -43,7 +43,7 @@ const Home = () => {
       if (!token) return alert('Please login to like posts');
 
       const res = await axios.post(`https://bleach-porcupine-parasail.ngrok-free.dev/api/post/${postId}/like`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       
       setPosts(posts.map(post => 
@@ -81,7 +81,7 @@ const Home = () => {
       if (!token) return alert('Please login to reply');
 
       const res = await axios.post(`https://bleach-porcupine-parasail.ngrok-free.dev/api/post/${postId}/reply`, { text }, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
 
       setPosts(posts.map(post => post._id === postId ? res.data : post));

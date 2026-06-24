@@ -30,7 +30,8 @@ const Register = () => {
         skillsKnown: form.skillsKnown.split(',').map(s => s.trim()).filter(Boolean),
         skillsToLearn: form.skillsToLearn.split(',').map(s => s.trim()).filter(Boolean)
       }, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {"ngrok-skip-browser-warning": "true"}
       });
       navigate('/login');
     } catch (err) {

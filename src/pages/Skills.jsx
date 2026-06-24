@@ -16,7 +16,8 @@ const Skills = () => {
       try {
         setIsFetching(true);
         const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/skills/', {
-          withCredentials: true
+          withCredentials: true,
+          headers:{ "ngrok-skip-browser-warning": "true" }
         });
         setSkillsKnown(res.data?.skillsKnown?.join(', ') || '');
         setSkillsToLearn(res.data?.skillsToLearn?.join(', ') || '');
@@ -40,7 +41,8 @@ const Skills = () => {
         skillsKnown: skillsKnown.split(',').map(s => s.trim()).filter(Boolean),
         skillsToLearn: skillsToLearn.split(',').map(s => s.trim()).filter(Boolean)
       }, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {"ngrok-skip-browser-warning": "true"}
       });
       
       setSuccess('Your skills have been updated successfully!');

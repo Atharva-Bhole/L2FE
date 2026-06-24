@@ -34,7 +34,7 @@ const Video = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
         });
         const currentUserId = res.data._id;
         setUserId(currentUserId);
@@ -45,7 +45,8 @@ const Video = () => {
         if (!peerId) {
           setIsLoadingContacts(true);
           const matchRes = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', {
-            withCredentials: true
+            withCredentials: true,
+            headers: {"ngrok-skip-browser-warning": "true"}
           });
           setContacts(matchRes.data.matches || []);
           setIsLoadingContacts(false);

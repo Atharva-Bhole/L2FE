@@ -45,16 +45,17 @@ const Chat = () => {
         const token = localStorage.getItem('token');
         
         const profileRes = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
-          headers: { Authorization: `Bearer ${token}` }
+          
+          headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
         });
         const currentUserId = profileRes.data._id;
         setUserId(currentUserId);
         
         const [matchRes, allUsersRes, requestsRes, recentRes] = await Promise.all([
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', { withCredentials: true }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/user/search?q=', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/chat/recent', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', { withCredentials: true, headers: { "ngrok-skip-browser-warning": "true" } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/user/search?q=', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/chat/recent', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } })
         ]);
         
         const matches = matchRes.data.matches || [];
@@ -108,7 +109,7 @@ const Chat = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get(`https://bleach-porcupine-parasail.ngrok-free.dev/api/chat/history/${peerId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       setMessages(res.data || []);
     } catch (err) {
@@ -198,11 +199,11 @@ const Chat = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/send', { receiverId: peerId }, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       // Refresh requests
       const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       setUserRequests(res.data.requests || []);
     } catch (err) {

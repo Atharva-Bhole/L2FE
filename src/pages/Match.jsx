@@ -19,10 +19,10 @@ const Match = () => {
         setIsLoading(true);
         const token = localStorage.getItem('token');
         const [profileRes, matchRes, allUsersRes, requestsRes] = await Promise.all([
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', { withCredentials: true }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/user/search?q=', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', { withCredentials: true, headers: {"ngrok-skip-browser-warning": "true"} }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/user/search?q=', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', { headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" } })
         ]);
         setCurrentUserId(profileRes.data._id);
         setMatches(matchRes.data.matches || []);
@@ -54,11 +54,11 @@ const Match = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/send', { receiverId: peerId }, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       // Refresh requests
       const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       setUserRequests(res.data.requests || []);
     } catch (err) {

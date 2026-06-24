@@ -25,7 +25,8 @@ const Profile = () => {
         const token = localStorage.getItem('token');
         const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true"
           }
         });
         setProfile(res.data);
@@ -61,7 +62,7 @@ const Profile = () => {
       };
 
       const res = await axios.put('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', payload, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
       });
       
       setProfile(res.data);
