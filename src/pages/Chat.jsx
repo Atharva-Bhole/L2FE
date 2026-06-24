@@ -264,6 +264,16 @@ const Chat = () => {
     });
   };
 
+  const getCleanFileUrl = (url) => {
+    if (!url) return '';
+    let cleanUrl = url;
+    if (cleanUrl.includes('localhost:5000')) {
+      cleanUrl = cleanUrl.replace('http://localhost:5000', '');
+    }
+    if (cleanUrl.startsWith('http')) return cleanUrl;
+    return `https://bleach-porcupine-parasail.ngrok-free.dev${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;
+  };
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-50 p-4 sm:p-6 lg:p-8 flex justify-center">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden flex h-[80vh] min-h-[600px] animate-fade-in">
@@ -363,9 +373,9 @@ const Chat = () => {
                           {msg.fileUrl && (
                             <div className="mb-2">
                               {isImage(msg.fileName) ? (
-                                <img src={`https://bleach-porcupine-parasail.ngrok-free.dev${msg.fileUrl}`} alt={msg.fileName} className="max-w-full rounded-lg max-h-64 object-cover" />
+                                <img src={getCleanFileUrl(msg.fileUrl)} alt={msg.fileName} className="max-w-full rounded-lg max-h-64 object-cover" />
                               ) : (
-                                <a href={`https://bleach-porcupine-parasail.ngrok-free.dev${msg.fileUrl}`} target="_blank" rel="noreferrer" className={`flex items-center space-x-2 p-2 rounded-lg ${isMe ? 'bg-blue-700/50 hover:bg-blue-700' : 'bg-slate-100 hover:bg-slate-200'} transition-colors`}>
+                                <a href={getCleanFileUrl(msg.fileUrl)} target="_blank" rel="noreferrer" className={`flex items-center space-x-2 p-2 rounded-lg ${isMe ? 'bg-blue-700/50 hover:bg-blue-700' : 'bg-slate-100 hover:bg-slate-200'} transition-colors`}>
                                   <FileText size={20} />
                                   <span className="text-sm underline truncate">{msg.fileName}</span>
                                 </a>
