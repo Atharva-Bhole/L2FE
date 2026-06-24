@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MessageSquare, Heart, Share2, Clock, User as UserIcon, Send } from 'lucide-react';
+import { MessageSquare, Heart, Share2, Clock, User as UserIcon, Send, X } from 'lucide-react';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -9,6 +9,33 @@ const Home = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
   
   const [replyStates, setReplyStates] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPost, setNewPost] = useState({ title: '', content: '' });
+  const [isCreatingPost, setIsCreatingPost] = useState(false);
+
+  const handleCreatePost = async (e) => {
+    e.preventDefault();
+    if (!newPost.title.trim() || !newPost.content.trim()) return;
+    
+    try {
+      setIsCreatingPost(true);
+      const token = localStorage.getItem('token');
+      if (!token) return alert('Please login to create a post');
+
+      const res = await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/post', newPost, {
+        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" }
+      });
+      
+      setPosts([res.data, ...posts]);
+      setNewPost({ title: '', content: '' });
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error('Failed to create post', err);
+      alert('Failed to create post');
+    } finally {
+      setIsCreatingPost(false);
+    }
+  };
 
   useEffect(() => {
     const initData = async () => {
@@ -110,7 +137,9 @@ const Home = () => {
           <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
             Join the community of learners. Post what you're learning, ask questions, and connect with people who can help you grow.
           </p>
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
             Create a Post
           </button>
         </div>
@@ -265,6 +294,66 @@ const Home = () => {
           })}
         </div>
       </div>
+
+      {/* Create Post Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden animate-slide-up">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+              <h3 className="text-xl font-bold text-slate-800">Create a Post</h3>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <form onSubmit={handleCreatePost} className="p-6">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Title</label>
+                <input
+                  type="text"
+                  required
+                  value={newPost.title}
+                  onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                  className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="What's on your mind?"
+                />
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Content</label>
+                <textarea
+                  required
+                  rows="4"
+                  value={newPost.content}
+                  onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                  placeholder="Share your learning experience..."
+                />
+              </div>
+              
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreatingPost || !newPost.title.trim() || !newPost.content.trim()}
+                  className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-sm"
+                >
+                  {isCreatingPost ? 'Posting...' : 'Post'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
