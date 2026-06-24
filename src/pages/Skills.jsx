@@ -15,7 +15,7 @@ const Skills = () => {
     const fetchSkills = async () => {
       try {
         setIsFetching(true);
-        const res = await axios.get('http://13.211.197.253:5000/api/skills/', {
+        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/skills/', {
           withCredentials: true
         });
         setSkillsKnown(res.data?.skillsKnown?.join(', ') || '');
@@ -36,7 +36,7 @@ const Skills = () => {
       setError('');
       setSuccess('');
 
-      await axios.put('http://13.211.197.253:5000/api/skills/', {
+      await axios.put('https://bleach-porcupine-parasail.ngrok-free.dev/api/skills/', {
         skillsKnown: skillsKnown.split(',').map(s => s.trim()).filter(Boolean),
         skillsToLearn: skillsToLearn.split(',').map(s => s.trim()).filter(Boolean)
       }, {

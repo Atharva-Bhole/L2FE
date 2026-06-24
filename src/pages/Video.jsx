@@ -33,7 +33,7 @@ const Video = () => {
     const initVideo = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://13.211.197.253:5000/api/auth/profile', {
+        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const currentUserId = res.data._id;
@@ -44,7 +44,7 @@ const Video = () => {
         // If no peerId, fetch contacts to select from
         if (!peerId) {
           setIsLoadingContacts(true);
-          const matchRes = await axios.get('http://13.211.197.253:5000/api/match/', {
+          const matchRes = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', {
             withCredentials: true
           });
           setContacts(matchRes.data.matches || []);

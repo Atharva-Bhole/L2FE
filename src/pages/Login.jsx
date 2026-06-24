@@ -16,7 +16,7 @@ const Login = () => {
     setError('');
     
     try {
-      const res = await axios.post('http://13.211.197.253:5000/api/auth/login', { email, password });
+      const res = await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       navigate('/profile');
       window.location.reload(); // Refresh to update navbar state

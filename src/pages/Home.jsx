@@ -15,13 +15,13 @@ const Home = () => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const profileRes = await axios.get('http://13.211.197.253:5000/api/auth/profile', {
+          const profileRes = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setCurrentUserId(profileRes.data._id);
         }
 
-        const res = await axios.get('http://13.211.197.253:5000/api/post');
+        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/post');
         setPosts(res.data);
       } catch (err) {
         setError('Failed to load posts. Please try again later.');
@@ -42,7 +42,7 @@ const Home = () => {
       const token = localStorage.getItem('token');
       if (!token) return alert('Please login to like posts');
 
-      const res = await axios.post(`http://13.211.197.253:5000/api/post/${postId}/like`, {}, {
+      const res = await axios.post(`https://bleach-porcupine-parasail.ngrok-free.dev/api/post/${postId}/like`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -80,7 +80,7 @@ const Home = () => {
       const token = localStorage.getItem('token');
       if (!token) return alert('Please login to reply');
 
-      const res = await axios.post(`http://13.211.197.253:5000/api/post/${postId}/reply`, { text }, {
+      const res = await axios.post(`https://bleach-porcupine-parasail.ngrok-free.dev/api/post/${postId}/reply`, { text }, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

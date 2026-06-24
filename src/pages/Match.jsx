@@ -19,10 +19,10 @@ const Match = () => {
         setIsLoading(true);
         const token = localStorage.getItem('token');
         const [profileRes, matchRes, allUsersRes, requestsRes] = await Promise.all([
-          axios.get('http://13.211.197.253:5000/api/auth/profile', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://13.211.197.253:5000/api/match/', { withCredentials: true }),
-          axios.get('http://13.211.197.253:5000/api/user/search?q=', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://13.211.197.253:5000/api/request/all', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/match/', { withCredentials: true }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/user/search?q=', { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', { headers: { Authorization: `Bearer ${token}` } })
         ]);
         setCurrentUserId(profileRes.data._id);
         setMatches(matchRes.data.matches || []);
@@ -53,11 +53,11 @@ const Match = () => {
   const handleSendRequest = async (peerId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://13.211.197.253:5000/api/request/send', { receiverId: peerId }, {
+      await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/send', { receiverId: peerId }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Refresh requests
-      const res = await axios.get('http://13.211.197.253:5000/api/request/all', {
+      const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/request/all', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUserRequests(res.data.requests || []);

@@ -23,7 +23,7 @@ const Profile = () => {
       try {
         setIsLoading(true);
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://13.211.197.253:5000/api/auth/profile', {
+        const res = await axios.get('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -60,7 +60,7 @@ const Profile = () => {
         skillsToLearn: editForm.skillsToLearn.split(',').map(s => s.trim()).filter(s => s)
       };
 
-      const res = await axios.put('http://13.211.197.253:5000/api/auth/profile', payload, {
+      const res = await axios.put('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

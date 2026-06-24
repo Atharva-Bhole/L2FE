@@ -26,7 +26,7 @@ export const SocketProvider = ({ children }) => {
     // Attempt to get userId from token if possible, or we could fetch profile
     const fetchUserIdAndConnect = async () => {
       try {
-        const res = await fetch('http://13.211.197.253:5000/api/auth/profile', {
+        const res = await fetch('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

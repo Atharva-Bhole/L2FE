@@ -25,7 +25,7 @@ const Register = () => {
     setError('');
 
     try {
-      await axios.post('http://13.211.197.253:5000/api/auth/register', {
+      await axios.post('https://bleach-porcupine-parasail.ngrok-free.dev/api/auth/register', {
         ...form,
         skillsKnown: form.skillsKnown.split(',').map(s => s.trim()).filter(Boolean),
         skillsToLearn: form.skillsToLearn.split(',').map(s => s.trim()).filter(Boolean)
