@@ -181,7 +181,7 @@ const Chat = () => {
 
   const startVideoCall = () => {
     if (!activePeer) return;
-    const inviteMessage = `🎥 I'm inviting you to a video call! Click the Video icon at the top to join me, or go to: http://localhost:5173/video?peer=${userId}`;
+    const inviteMessage = `🎥 I'm inviting you to a video call! Click the Video icon at the top to join me, or go to: https://l2-fe.vercel.app/video?peer=${userId}`;
     socket?.emit('send_message', { senderId: userId, receiverId: activePeer.userId, message: inviteMessage });
     setMessages(prev => [...prev, { senderId: userId, message: inviteMessage, timestamp: new Date() }]);
     navigate(`/video?peer=${activePeer.userId}`);
@@ -363,9 +363,9 @@ const Chat = () => {
                           {msg.fileUrl && (
                             <div className="mb-2">
                               {isImage(msg.fileName) ? (
-                                <img src={`http://localhost:5000${msg.fileUrl}`} alt={msg.fileName} className="max-w-full rounded-lg max-h-64 object-cover" />
+                                <img src={`https://bleach-porcupine-parasail.ngrok-free.dev${msg.fileUrl}`} alt={msg.fileName} className="max-w-full rounded-lg max-h-64 object-cover" />
                               ) : (
-                                <a href={`http://localhost:5000${msg.fileUrl}`} target="_blank" rel="noreferrer" className={`flex items-center space-x-2 p-2 rounded-lg ${isMe ? 'bg-blue-700/50 hover:bg-blue-700' : 'bg-slate-100 hover:bg-slate-200'} transition-colors`}>
+                                <a href={`https://bleach-porcupine-parasail.ngrok-free.dev${msg.fileUrl}`} target="_blank" rel="noreferrer" className={`flex items-center space-x-2 p-2 rounded-lg ${isMe ? 'bg-blue-700/50 hover:bg-blue-700' : 'bg-slate-100 hover:bg-slate-200'} transition-colors`}>
                                   <FileText size={20} />
                                   <span className="text-sm underline truncate">{msg.fileName}</span>
                                 </a>
