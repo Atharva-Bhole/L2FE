@@ -23,6 +23,7 @@ export const SocketProvider = ({ children }) => {
     // For now, let's connect.
     const newSocket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { 
       autoConnect: false,
+      transports: ['websocket'],
       extraHeaders: {
         "ngrok-skip-browser-warning": "true"
       }

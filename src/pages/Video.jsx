@@ -6,6 +6,7 @@ import { Video as VideoIcon, User, Loader2 } from 'lucide-react';
 
 const socket = io('https://bleach-porcupine-parasail.ngrok-free.dev', { 
   autoConnect: false,
+  transports: ['websocket'],
   extraHeaders: {
     "ngrok-skip-browser-warning": "true"
   }
