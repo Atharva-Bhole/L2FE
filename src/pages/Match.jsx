@@ -66,7 +66,12 @@ const Match = () => {
     }
   };
 
-  const listToShow = activeTab === 'matches' ? matches : allUsers.map(u => ({ ...u, userId: u._id }));
+  const listToShow = activeTab === 'matches' ? matches : allUsers.map(u => ({ 
+    ...u, 
+    userId: u._id,
+    teachToOther: u.skillsKnown || [],
+    learnFromOther: u.skillsToLearn || []
+  }));
 
   const filteredUsers = listToShow.filter(user => {
     if (!searchQuery) return true;

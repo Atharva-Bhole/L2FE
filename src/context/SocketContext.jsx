@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import { MessageSquare, Phone, X, Check } from 'lucide-react';
@@ -11,6 +11,8 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [callInvite, setCallInvite] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const timeoutRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export const SocketProvider = ({ children }) => {
         });
         if (res.ok) {
           const data = await res.json();
+          setUserId(data._id);
           newSocket.connect();
           newSocket.emit('join', { userId: data._id });
         }
@@ -55,6 +58,42 @@ export const SocketProvider = ({ children }) => {
       newSocket.disconnect();
     };
   }, []);
+
+  const handleActivity = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    // Reconnect if disconnected
+    if (socket && socket.disconnected && userId) {
+      socket.connect();
+      socket.emit('join', { userId });
+    }
+
+    // Set new timeout for 1 minute (60000 ms)
+    timeoutRef.current = setTimeout(() => {
+      if (socket && socket.connected) {
+        socket.disconnect();
+      }
+    }, 60000);
+  }, [socket, userId]);
+
+  useEffect(() => {
+    if (!socket) return;
+    
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    window.addEventListener('mousedown', handleActivity);
+    window.addEventListener('touchstart', handleActivity);
+
+    handleActivity();
+
+    return () => {
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('mousedown', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [socket, handleActivity]);
 
   useEffect(() => {
     if (!socket) return;
